@@ -25,7 +25,7 @@ Just stand in front of your laptop, launch the script, and start punching — yo
 - **Relative hand-to-head position** is used to detect a duck.
 - **PyAutoGUI** simulates keypresses (`R`, `T`, `A`) based on the moves.
 
----
+----
 
 ## 🏃 Why Use It?
 
