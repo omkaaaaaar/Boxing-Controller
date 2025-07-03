@@ -16,7 +16,7 @@ This project turns your body into a game controller using your webcam, powered b
 
 Just stand in front of your laptop, launch the script, and start punching — your movements control the game directly!
 
----
+----
 
 ## 🔧 How It Works
 
