@@ -34,7 +34,7 @@ Just stand in front of your laptop, launch the script, and start punching — yo
 - Skip the keyboard — **fight with your fists**
 - Have fun while doing a quick cardio workout
 - Turn any browser boxing game into an interactive fitness game
-- Works great with [Punchers on Poki](https://poki.com/en/g/punchers)
+- Works great with [Punchers on Poki](https://poki.com/en/g/punchers) 👊
 
 ---
 
