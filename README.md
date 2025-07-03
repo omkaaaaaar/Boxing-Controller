@@ -8,7 +8,7 @@ This project turns your body into a game controller using your webcam, powered b
 
 ## 🎮 What It Does
 
-| Real-World Move       | In-Game Key Press | Action Triggered     |
+| Real-World Move       | In-Game Key Press | Action Triggered      |
 |-----------------------|-------------------|-----------------------|
 | Straight left punch   | `R`               | **Jab**               |
 | Straight right punch  | `T` (0.05s hold)  | **Hook**              |
