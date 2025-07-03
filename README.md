@@ -4,7 +4,7 @@ Control [**Punchers**](https://poki.com/en/g/punchers) — a free browser boxing
 
 This project turns your body into a game controller using your webcam, powered by **OpenCV**, **MediaPipe**, and **pyautogui**. A fun way to sweat it out while gaming!
 
----
+----
 
 ## 🎮 What It Does
 
