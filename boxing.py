@@ -69,35 +69,36 @@ while cap.isOpened():
         nose = lm[mp_pose.PoseLandmark.NOSE]
 
         # Angles
-        left_arm_angle = calculate_angle(rs, re, rw)   # Hook (Left)
         right_arm_angle = calculate_angle(ls, le, lw)  # Jab (Right)
+        left_arm_angle = calculate_angle(rs, re, rw)   # Hook (Left)
 
         # === JAB (Right arm) → R
         if right_arm_angle > 120 and not jab_held:
             pyautogui.press('r')
             jab_held = True
-            log_event("JAB (R)")
+            log_event("JAB 👊")
         elif right_arm_angle <= 120:
             jab_held = False
 
-        # === HOOK (Left arm) → T + W for 0.05s
-        if left_arm_angle > 160 and not hook_held:
+        # === FIXED HOOK: Arm extended (angle-based) + elbow pushed forward or straight
+        if left_arm_angle > 150 and re.y < rs.y + 0.1 and not hook_held:
             pyautogui.keyDown('t')
             pyautogui.keyDown('w')
             hook_held = True
             hook_time = now
-            log_event("HOOK (T + W)")
+            log_event("HOOK 🥊")
+
         if hook_held and now - hook_time >= 0.05:
             pyautogui.keyUp('t')
             pyautogui.keyUp('w')
             hook_held = False
 
-        # === DUCK → S (one or both hands above nose)
+        # === DUCK → A (one or both hands above nose)
         if lw.y < nose.y or rw.y < nose.y:
             if not duck_held:
                 pyautogui.keyDown('a')
                 duck_held = True
-                log_event("DUCK (A)")
+                log_event("DUCK 🦆")
         else:
             if duck_held:
                 pyautogui.keyUp('a')
