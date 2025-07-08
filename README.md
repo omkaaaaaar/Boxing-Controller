@@ -1,4 +1,4 @@
-# 🥊 Virtual Boxing Controller – Play & Sweat!
+# 🥊 Virtual Boxing Controller – Sweat-N-Play!
 
 Control [**Punchers**](https://poki.com/en/g/punchers) — a free browser boxing game — **using your real punches, hooks, and ducks!**
 
