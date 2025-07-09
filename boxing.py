@@ -62,26 +62,29 @@ while cap.isOpened():
 
     if results.pose_landmarks:
         lm = results.pose_landmarks.landmark
-        # Left = back = hook = RED
-        rw, re, rs = lm[mp_pose.PoseLandmark.LEFT_WRIST], lm[mp_pose.PoseLandmark.LEFT_ELBOW], lm[mp_pose.PoseLandmark.LEFT_SHOULDER]
-        # Right = front = jab = BLUE
-        lw, le, ls = lm[mp_pose.PoseLandmark.RIGHT_WRIST], lm[mp_pose.PoseLandmark.RIGHT_ELBOW], lm[mp_pose.PoseLandmark.RIGHT_SHOULDER]
+
+        # ✅ FRONT HAND (closer to camera) = LEFT landmarks = HOOK = RED
+        front_wrist, front_elbow, front_shoulder = lm[mp_pose.PoseLandmark.LEFT_WRIST], lm[mp_pose.PoseLandmark.LEFT_ELBOW], lm[mp_pose.PoseLandmark.LEFT_SHOULDER]
+
+        # ✅ BACK HAND (farther) = RIGHT landmarks = JAB = BLUE
+        back_wrist, back_elbow, back_shoulder = lm[mp_pose.PoseLandmark.RIGHT_WRIST], lm[mp_pose.PoseLandmark.RIGHT_ELBOW], lm[mp_pose.PoseLandmark.RIGHT_SHOULDER]
+
         nose = lm[mp_pose.PoseLandmark.NOSE]
 
         # Angles
-        right_arm_angle = calculate_angle(ls, le, lw)  # Jab (Right)
-        left_arm_angle = calculate_angle(rs, re, rw)   # Hook (Left)
+        hook_angle = calculate_angle(front_shoulder, front_elbow, front_wrist)
+        jab_angle = calculate_angle(back_shoulder, back_elbow, back_wrist)
 
-        # === JAB (Right arm) → R
-        if right_arm_angle > 120 and not jab_held:
+        # === JAB (Back arm) → R
+        if jab_angle > 120 and not jab_held:
             pyautogui.press('r')
             jab_held = True
             log_event("JAB 👊")
-        elif right_arm_angle <= 120:
+        elif jab_angle <= 120:
             jab_held = False
 
-        # === FIXED HOOK: Arm extended (angle-based) + elbow pushed forward or straight
-        if left_arm_angle > 150 and re.y < rs.y + 0.1 and not hook_held:
+        # === HOOK (Front arm) → T + W
+        if hook_angle > 150 and front_elbow.y < front_shoulder.y + 0.1 and not hook_held:
             pyautogui.keyDown('t')
             pyautogui.keyDown('w')
             hook_held = True
@@ -94,7 +97,7 @@ while cap.isOpened():
             hook_held = False
 
         # === DUCK → A (one or both hands above nose)
-        if lw.y < nose.y or rw.y < nose.y:
+        if back_wrist.y < nose.y or front_wrist.y < nose.y:
             if not duck_held:
                 pyautogui.keyDown('a')
                 duck_held = True
@@ -104,15 +107,17 @@ while cap.isOpened():
                 pyautogui.keyUp('a')
                 duck_held = False
 
-        # Draw arms
-        for point in [ls, le, lw]:
+        # Draw back (blue) = JAB
+        for point in [back_shoulder, back_elbow, back_wrist]:
             cv2.circle(frame, get_coords(point, frame.shape), 5, COLOR_BLUE, -1)
-        for point in [rs, re, rw]:
+        cv2.line(frame, get_coords(back_shoulder, frame.shape), get_coords(back_elbow, frame.shape), COLOR_BLUE, 2)
+        cv2.line(frame, get_coords(back_elbow, frame.shape), get_coords(back_wrist, frame.shape), COLOR_BLUE, 2)
+
+        # Draw front (red) = HOOK
+        for point in [front_shoulder, front_elbow, front_wrist]:
             cv2.circle(frame, get_coords(point, frame.shape), 5, COLOR_RED, -1)
-        cv2.line(frame, get_coords(ls, frame.shape), get_coords(le, frame.shape), COLOR_BLUE, 2)
-        cv2.line(frame, get_coords(le, frame.shape), get_coords(lw, frame.shape), COLOR_BLUE, 2)
-        cv2.line(frame, get_coords(rs, frame.shape), get_coords(re, frame.shape), COLOR_RED, 2)
-        cv2.line(frame, get_coords(re, frame.shape), get_coords(rw, frame.shape), COLOR_RED, 2)
+        cv2.line(frame, get_coords(front_shoulder, frame.shape), get_coords(front_elbow, frame.shape), COLOR_RED, 2)
+        cv2.line(frame, get_coords(front_elbow, frame.shape), get_coords(front_wrist, frame.shape), COLOR_RED, 2)
 
     cv2.imshow("Virtual Boxing", frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
